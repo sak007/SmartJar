@@ -2,7 +2,7 @@ import helper
 import logging
 from telebot import types
 from datetime import datetime
-
+from wiotpApplicationClient import ApplicationClient
 
 
 
@@ -46,7 +46,7 @@ def approve(bot, count, request_message, responder_message):
     msg = 'Request Approved by ' + parent_name + ' for ' + str(count) + ' cookies\n';
     msg += "Don't take more than " + str(count) + " cookies"
     bot.reply_to(request_message, msg)
-    openJar()
+    openJar(count)
 
 def reject(bot, request_message, responder_message):
     parent_name = helper.get_name(responder_message.chat.id)
@@ -62,5 +62,11 @@ def post_approved_count_input(message, bot, request_message):
     count = int(message.text)
     approve(bot, count, request_message, message)
 
-def openJar():
-    pass
+def openJar(count):
+    try:
+        client = ApplicationClient()
+        eventData = {'Open': True, 'Count': count}
+        client.sendCommand('Jar', eventData)
+        client.client.disconnect()
+    except Exception as e:
+        print("Exception: ", e)

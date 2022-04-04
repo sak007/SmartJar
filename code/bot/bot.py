@@ -17,7 +17,7 @@ from jproperties import Properties
 #
 # api_token = str(configs.get('api_token').data)
 
-api_token = ''
+api_token = '5116895208:AAHBnLUSyqZtfkat7Gck0OvCMhz7djBqSqQ'
 bot = telebot.TeleBot(api_token)
 
 telebot.logger.setLevel(logging.INFO)
