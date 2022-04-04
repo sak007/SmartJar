@@ -5,6 +5,8 @@ import time
 import request
 import helper
 import deleteAccount
+import listChildren
+import listParents
 from datetime import datetime
 from jproperties import Properties
 
@@ -54,6 +56,14 @@ def command_add(message):
 @bot.message_handler(commands=['deleteAccount'])
 def command_add(message):
     deleteAccount.run(message, bot)
+
+@bot.message_handler(commands=['listChildren'])
+def command_add(message):
+    listChildren.run(message, bot)
+
+@bot.message_handler(commands=['listParents'])
+def command_add(message):
+    listParents.run(message, bot)
 
 def main():
     try:

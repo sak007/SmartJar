@@ -10,10 +10,21 @@ initial_users_map = {
 
 
 commands = {
-    'menu': 'Display this menu',
-    'start': 'Display this menu',
-    'request': 'Request parent for cookie',
-    'deleteAccount': 'Delete the user account'
+    'CHILD': {
+        'menu': 'Display this menu',
+        'start': 'Display this menu',
+        'request': 'Request parent for cookie',
+        'deleteAccount': 'Delete the user account'
+    },
+    'PARENT': {
+        'menu': 'Display this menu',
+        'start': 'Display this menu',
+        'listChildren': 'Display all the children registered',
+        'listParents': 'Display all the parents registered',
+        'deleteAccount': 'Delete the user account',
+        'deleteChildAccount': 'TODO: Delete a specific child account',
+        'deleteParentAccount': 'TODO: Delete a specific parent account'
+    }
 }
 
 
@@ -56,9 +67,9 @@ def user_role(chat_id):
 
 def home(bot, chat_id):
     text_intro = 'Welcome to SmartJar Bot, ' + get_name(chat_id) + '\n\n'
-    for c in commands:  # generate help text out of the commands dictionary defined at the top
+    for c in commands[user_role(chat_id)]:  # generate help text out of the commands dictionary defined at the top
         text_intro += "/" + c + ": "
-        text_intro += commands[c] + "\n\n"
+        text_intro += commands[user_role(chat_id)][c] + "\n\n"
     bot.send_message(chat_id, text_intro)
 
 def delete_account(chat_id):
@@ -89,3 +100,11 @@ def post_name_input(message, bot, role):
     bot.send_message(chat_id, 'User Added!')
     save_users()
     home(bot, chat_id)
+
+def list(bot, chat_id, role):
+    msg = role + ' list:\n'
+    i = 1
+    for user_name in users[role].values():
+        msg += str(i) + ". " + user_name + '\n'
+        i += 1
+    bot.send_message(chat_id, msg)
