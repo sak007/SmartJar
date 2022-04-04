@@ -2,17 +2,27 @@ from IOConfig import *
 import time
 
 def testRelay():
-    for i in range(3):
-        print("Relay On")
-        turnRelayOn()
-        time.sleep(2)
-        print("Relay Off")
-        turnRelayOff()
-        time.sleep(2)
+    print("Relay On")
+    turnRelaysOn()
+    time.sleep(10)
+    print("Relay Off")
+    turnRelaysOff()
+
+def testContact():
+    print("Activating contact sensor")
+    activateContactSensor()
+    time.sleep(1)
+    for i in range(10):
+        if readContactSensor():
+            print("Contact detected")
+        else:
+            print("No contact detected")
+        time.sleep(1)
 
 def main():
     setup()
-    testRelay()
+    #testRelay()
+    testContact()
     GPIO.cleanup()
 
 
