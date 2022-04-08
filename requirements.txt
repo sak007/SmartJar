@@ -1,0 +1,3 @@
+wiotp-sdk
+pyTelegramBotAPI
+jproperties

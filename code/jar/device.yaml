@@ -1,0 +1,6 @@
+identity:
+    orgId: 9jw3q8
+    typeId: RaspberryPi
+    deviceId: SmartJar1
+auth:
+    token: SmartJar1
