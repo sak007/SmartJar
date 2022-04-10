@@ -2,6 +2,7 @@ import wiotp.sdk.application
 import json
 import uuid
 from time import sleep
+import jarHelper
 
 class ApplicationClient:
 
@@ -21,7 +22,9 @@ class ApplicationClient:
 
     def onMessage(self, event):
         print(event.eventId, event.data)
-
+        for key in jarHelper.get_info().keys():
+            if key in event.data:
+                jarHelper.update(key, event.data[key])
 
 if __name__ == "__main__":
     try:

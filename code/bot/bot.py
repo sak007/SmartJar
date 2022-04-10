@@ -67,7 +67,7 @@ def command_add(message):
 
 def main():
     try:
-        helper.load_users()
+        helper.init()
         bot.polling(none_stop=True)
     except Exception as e:
         logging.exception(str(e))
