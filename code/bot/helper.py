@@ -21,12 +21,13 @@ commands = {
     'PARENT': {
         'menu': 'Display this menu',
         'start': 'Display this menu',
+        'refill': 'Initiate Refill',
         'listChildren': 'Display all the children registered',
         'listParents': 'Display all the parents registered',
         'deleteAccount': 'Delete the user account',
         'deleteChildAccount': 'TODO: Delete a specific child account',
         'deleteParentAccount': 'TODO: Delete a specific parent account',
-        'jarStatus':'Gives the status of the jar' 
+        'jarStatus':'Gives the status of the jar'
     }
 }
 

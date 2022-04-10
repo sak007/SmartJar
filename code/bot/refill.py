@@ -1,5 +1,6 @@
 import helper
 import jarHelper
+from telebot import types
 
 def run(message, bot):
     chat_id = message.chat.id
@@ -15,8 +16,8 @@ def run(message, bot):
 
 def post_refill(message, bot):
     helper.openJar(False, None)
-    while jarHelper.get('lidState') != 'on':
-        pass
+    # while jarHelper.get('lidState') != 'on':
+    #     pass
 
     chat_id = message.chat.id
     message = bot.send_message(chat_id, 'Enter number of cookies added:')
