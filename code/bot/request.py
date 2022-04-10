@@ -65,8 +65,8 @@ def post_approved_count_input(message, bot, request_message):
 def openJar(count):
     try:
         client = ApplicationClient()
-        eventData = {'Open': True, 'Count': count}
-        client.sendCommand('Jar', eventData)
+        eventData = {'unlock': True, 'weight': count}
+        client.sendCommand('jar', eventData)
         client.client.disconnect()
     except Exception as e:
         print("Exception: ", e)
