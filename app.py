@@ -11,6 +11,7 @@ from datacollector import HIST_DIR, RT_FILE
 TEMPLATES_DIR = "templates/"
 application = Flask(__name__, template_folder = TEMPLATES_DIR)
 
+#http://192.168.0.111:5000/
 
 @application.route('/')
 def index():
