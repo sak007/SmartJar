@@ -7,6 +7,7 @@ import helper
 import deleteAccount
 import listChildren
 import listParents
+import refill
 from datetime import datetime
 from jproperties import Properties
 import jarStatus
@@ -18,7 +19,7 @@ import jarStatus
 #
 # api_token = str(configs.get('api_token').data)
 
-api_token = '5275953450:AAFSNDwpryicF8JvovlVZuliO3oMGTBwunU'
+api_token = '5116895208:AAHBnLUSyqZtfkat7Gck0OvCMhz7djBqSqQ'
 bot = telebot.TeleBot(api_token)
 
 telebot.logger.setLevel(logging.INFO)
@@ -69,6 +70,12 @@ def command_add(message):
 @bot.message_handler(commands=['jarStatus'])
 def command_add(message):
     jarStatus.run(message, bot)
+
+@bot.message_handler(commands=['refill'])
+def command_add(message):
+    refill.run(message, bot)
+
+
 def main():
     try:
         helper.init()
