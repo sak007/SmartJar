@@ -15,12 +15,14 @@ CAL_WEIGHT_G = 1031.76667     # Calibration weight grams
 LOJ_PIN = 38                  # Lid On Jar Pin
 JOS_PIN = 40                  # Jar On Scale Pin
 LR_PIN = 8                    # Lock Relay Pin
+ALRM_PIN = 22                 # Alarm Pin
 HX711_DATA_PIN = 29           # HX711 Data Pin
 HX711_CLK_PIN = 31            # HX711 Clock Pin
 
+
 class DeviceClient:
 
-    def __init__(self):
+    def __init__(self, jarObject):
         f = open('properties.json')
         properties = json.load(f)
         f.close()
@@ -29,6 +31,8 @@ class DeviceClient:
         options = wiotp.sdk.device.parseConfigFile("device.yaml")
         self.client = wiotp.sdk.device.DeviceClient(config=options)
         self.client.commandCallback = self.commandCallback
+        self.unlockRequestReceivedFlag = 0
+        self.jar = jarObject
 
     def connect(self):
         self.client.connect()
@@ -45,7 +49,12 @@ class DeviceClient:
 
     def commandCallback(self, data):
         print("Command callback")
-        print(data.data)
+        if "unlock" in data.data:
+            print("Unlock Command Received")
+            jar.unlock()
+        if "triggerAlarm" in data.data:
+            print("Alarm Command Received: " + str(data.data["triggerAlarm"]) + " seconds")
+            jar.triggerAlarm(int(data.data["triggerAlarm"]))
 
 class SmartJar:
 
@@ -64,10 +73,11 @@ class SmartJar:
         self.contactSWDebounceTimeSec = 1
         self.lidOnJarStateDebounceStartTime = 0
         self.jarOnScaleStateDebounceStartTime = 0
-        self.takeWeightMeasurementFlag = 1 
+        self.takeWeightMeasurementFlag = 1
         self.weightReadyFlag = 0
-        self.alarmDebounceSecRem = 0
-        self.cloudClient = DeviceClient()
+        self.alarmActiveTimeSec = 0
+        self.alarmStartTime = 0
+        self.cloudClient = DeviceClient(self)
         self.hx = HX711(HX711_DATA_PIN, HX711_CLK_PIN)
         self.hx.set_reading_format("MSB", "MSB")
         self.hx.set_reference_unit(REF_1135_G)
@@ -75,6 +85,7 @@ class SmartJar:
         GPIO.setup(LOJ_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Lid On Jar Contact Sensor
         GPIO.setup(JOS_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Jar On Scale Contact Sensor
         GPIO.setup(LR_PIN, GPIO.OUT)                             # Lock Relay
+        GPIO.setup(ALRM_PIN, GPIO.OUT)                           # Alarm Pin
 
     def connect(self):
         self.cloudClient.connect()
@@ -145,6 +156,15 @@ class SmartJar:
             self.jarOnScaleState = jarOnScaleStateNew
             self.publish("valueChange_jarOnScaleState", "jarOnScaleState",self.getFormattedJarOnScaleState())
 
+    def updateAlarm(self):
+        if self.alarmActiveTimeSec != 0 and self.alarmStartTime == 0:
+            self.alarmStartTime = time.time()
+            GPIO.output(ALRM_PIN, GPIO.HIGH)
+        elif self.alarmActiveTimeSec != 0 and (time.time() - self.alarmStartTime) > self.alarmActiveTimeSec:
+            self.alarmActiveTimeSec = 0
+            self.alarmStartTime = 0
+            GPIO.output(ALRM_PIN, GPIO.LOW)
+
     # Function to control and publish the state of the lock. 
     def updateLock(self):
         # Unlock when requested
@@ -168,6 +188,10 @@ class SmartJar:
     # Helper function to set the unlock request flag.
     def unlock(self):
         self.unlockRequestFlag = 1
+
+    # Helper function to set the alarm time remaining.
+    def triggerAlarm(self, seconds):
+        self.alarmActiveTimeSec += seconds
 
     # Helper function to control publishing event data to the cloud service.
     def publish(self, event, tag, value):
@@ -235,6 +259,7 @@ if __name__ == "__main__":
 
             jar.updateLidOnJarState()
             jar.updateJarOnScaleState()
+            jar.updateAlarm()
             jar.updateLock()
             jar.updateWeight()
 
