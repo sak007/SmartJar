@@ -11,7 +11,7 @@ import json
 FILE_NAME = 'jar_info.json'
 
 initial_jar_info_map = {
-    'ConnectionStatus': 'unknown',
+    'connectionStatus': 'unknown',
     'lidState': 'unknown',
     'jarOnScaleState': 'unknown',
     'lockState': 'unknown',
