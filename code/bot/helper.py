@@ -25,7 +25,8 @@ commands = {
         'listParents': 'Display all the parents registered',
         'deleteAccount': 'Delete the user account',
         'deleteChildAccount': 'TODO: Delete a specific child account',
-        'deleteParentAccount': 'TODO: Delete a specific parent account'
+        'deleteParentAccount': 'TODO: Delete a specific parent account',
+        'jarStatus':'Gives the status of the jar' 
     }
 }
 
