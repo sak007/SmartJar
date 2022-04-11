@@ -129,7 +129,7 @@ class SmartJar:
             self.weightReadyFlag = 1
 
         if self.weightReadyFlag == 1 and self.takeWeightMeasurementFlag == 1 and self.isSteadyState() == True and self.lidOnJarState == 1 and self.jarOnScaleState ==1:
-            self.publish("valueChange_weight", "weight",self.weight)
+            self.publish("jar", "weight",self.weight)
             self.takeWeightMeasurementFlag = 0
 
     # Function to monitor and publish the state of the lid on the jar and set
@@ -141,7 +141,7 @@ class SmartJar:
             self.lidOnJarStateDebounceStartTime = time.time()
         elif (time.time() - self.lidOnJarStateDebounceStartTime) > self.contactSWDebounceTimeSec:
             self.lidOnJarState = lidOnJarStateNew
-            self.publish("valueChange_lidState", "lidState",self.getFormattedLidState())
+            self.publish("jar", "lidState",self.getFormattedLidState())
             if self.lidOnJarState == 0:
                 self.takeWeightMeasurementFlag = 1
 
@@ -154,7 +154,7 @@ class SmartJar:
             self.jarOnScaleStateDebounceStartTime = time.time()
         elif (time.time() - self.jarOnScaleStateDebounceStartTime) > self.contactSWDebounceTimeSec:
             self.jarOnScaleState = jarOnScaleStateNew
-            self.publish("valueChange_jarOnScaleState", "jarOnScaleState",self.getFormattedJarOnScaleState())
+            self.publish("jar", "jarOnScaleState",self.getFormattedJarOnScaleState())
 
     def updateAlarm(self):
         if self.alarmActiveTimeSec != 0 and self.alarmStartTime == 0:
@@ -169,7 +169,7 @@ class SmartJar:
     def updateLock(self):
         # Unlock when requested
         if self.unlockRequestFlag == 1:
-            self.publish("valueChange_lockState", "lockState","unlocked")
+            self.publish("jar", "lockState","unlocked")
             GPIO.output(LR_PIN, GPIO.LOW)
             self.lockState = 0
             self.unlockLatch = 1
@@ -181,7 +181,7 @@ class SmartJar:
 
         # Once unlocked, and the lid has been replaced, relock
         if self.lidOnJarState == 1 and self.lockState != 1 and self.unlockLatch == 0:
-            self.publish("valueChange_lockState", "lockState","locked")
+            self.publish("jar", "lockState","locked")
             GPIO.output(LR_PIN, GPIO.HIGH)
             self.lockState = 1
 
