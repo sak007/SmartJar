@@ -11,12 +11,14 @@ import json
 FILE_NAME = 'jar_info.json'
 
 initial_jar_info_map = {
-    'connectionStatus': 'unknown',
+    # 'connectionStatus': 'unknown',
     'lidState': 'unknown',
     'jarOnScaleState': 'unknown',
     'lockState': 'unknown',
-    'weight': -1.0,
-    'weightPerItem': -1.0
+    'weight': -1,
+    'weightPerItem': -1,
+    'zeroWeight': -1,
+    'count': -1
 }
 
 
@@ -32,7 +34,7 @@ def load_jar_status():
         jar_info = format_jar_data(jar_data)
 
 def format_jar_data(jar_data):
-    jar_data['weight'] = float(jar_data['weight'])
+    jar_data['weight'] = jar_data['weight']
     return jar_data
 
 def get_info():
@@ -50,5 +52,13 @@ def get(key):
     return jar_info[key]
 
 def setWeightPerItem(count):
-    weight = get('weight')
+    weight = get('weight') - get('zeroWeight')
     update('weightPerItem', weight/count)
+
+def updateZeroWeight():
+    update('zeroWeight', get('weight'))
+
+def updateCount():
+    count = round(get('weight')/get('zeroWeight'))
+    update('count', count)
+    

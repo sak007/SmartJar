@@ -46,7 +46,7 @@ def approve(bot, count, request_message, responder_message):
     msg = 'Request Approved by ' + parent_name + ' for ' + str(count) + ' cookies\n';
     msg += "Don't take more than " + str(count) + " cookies"
     bot.reply_to(request_message, msg)
-    openJar(count)
+    helper.openJar(True, count)
 
 def reject(bot, request_message, responder_message):
     parent_name = helper.get_name(responder_message.chat.id)
@@ -61,12 +61,3 @@ def partially_approve(bot, request_message, responder_message):
 def post_approved_count_input(message, bot, request_message):
     count = int(message.text)
     approve(bot, count, request_message, message)
-
-def openJar(count):
-    try:
-        client = ApplicationClient()
-        eventData = {'unlock': True, 'weight': count}
-        client.sendCommand('jar', eventData)
-        client.client.disconnect()
-    except Exception as e:
-        print("Exception: ", e)
