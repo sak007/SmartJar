@@ -157,10 +157,15 @@ class SmartJar:
             self.publish("jar", "jarOnScaleState",self.getFormattedJarOnScaleState())
 
     def updateAlarm(self):
+        # The alarm was requested to be active
         if self.alarmActiveTimeSec != 0 and self.alarmStartTime == 0:
             self.alarmStartTime = time.time()
+ 
+        # Lid was taken off jar but it wasn't unlocked or the alarm timer is set
+        if (self.lidOnJarState == 0 and self.lockState == 1) or self.alarmStartTime != 0:
             GPIO.output(ALRM_PIN, GPIO.HIGH)
-        elif self.alarmActiveTimeSec != 0 and (time.time() - self.alarmStartTime) > self.alarmActiveTimeSec:
+
+        elif (self.alarmActiveTimeSec != 0 and (time.time() - self.alarmStartTime) > self.alarmActiveTimeSec) or (self.alarmActiveTimeSec == 0 and self.lidOnJarState == 1):
             self.alarmActiveTimeSec = 0
             self.alarmStartTime = 0
             GPIO.output(ALRM_PIN, GPIO.LOW)
@@ -228,9 +233,9 @@ class SmartJar:
     # Helper function to get formatted lock state.
     def getFormattedLockState(self):
         if self.lockState == 1:
-            return "on"
+            return "locked"
         elif self.lockState == 0:
-            return "off"
+            return "unlocked"
         else:
             return "unknown"    
 
