@@ -10,8 +10,8 @@ import RPi.GPIO as GPIO
 
 #REF_1135_G_Radek = 430.37    # Reference Value
 #CAL_WEIGHT_G_Radek = 1031    # Calibration weight grams
-REF_1135_G = 428.15           # Reference Value
-CAL_WEIGHT_G = 1031.76667     # Calibration weight grams
+#REF_1135_G = 428.15           # Reference Value
+#CAL_WEIGHT_G = 1031.76667     # Calibration weight grams
 LOJ_PIN = 38                  # Lid On Jar Pin
 JOS_PIN = 40                  # Jar On Scale Pin
 LR_PIN = 8                    # Lock Relay Pin
@@ -59,6 +59,11 @@ class DeviceClient:
 class SmartJar:
 
     def __init__(self):
+        f = open('properties.json')
+        properties = json.load(f)
+        f.close()
+        self.calWeight = properties['CAL_WEIGHT']
+        self.calRefVal = properties['CAL_REF_VAL']
         self.weightBuffer = deque()
         self.weightBufferSize = 5
         self.steadyStateCheckBuffer = deque()
@@ -80,7 +85,7 @@ class SmartJar:
         self.cloudClient = DeviceClient(self)
         self.hx = HX711(HX711_DATA_PIN, HX711_CLK_PIN)
         self.hx.set_reading_format("MSB", "MSB")
-        self.hx.set_reference_unit(REF_1135_G)
+        self.hx.set_reference_unit(self.calRefVal)
         self.hx.reset()
         GPIO.setup(LOJ_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Lid On Jar Contact Sensor
         GPIO.setup(JOS_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Jar On Scale Contact Sensor
@@ -120,7 +125,7 @@ class SmartJar:
         self.updateSteadyStateBuffer(rawWeight)
 
         # Update calibrated weight buffer value
-        self.weightBuffer.append(rawWeight + CAL_WEIGHT_G)
+        self.weightBuffer.append(rawWeight + self.calWeight)
         if len(self.weightBuffer) > self.weightBufferSize:
             self.weightBuffer.popleft()
         self.weight = statistics.mean(self.weightBuffer)
