@@ -4,7 +4,6 @@ import uuid
 import time
 import statistics
 from collections import deque
-from scale import *
 from hx711 import HX711
 import RPi.GPIO as GPIO
 
