@@ -22,12 +22,9 @@ HX711_CLK_PIN = 31            # HX711 Clock Pin
 
 class DeviceClient:
 
-    def __init__(self, jarObject):
-        f = open('properties.json')
-        properties = json.load(f)
-        f.close()
-        self.typeId = properties['DEVICE_TYPE']
-        self.deviceId = properties['DEVICE_ID']
+    def __init__(self, typeId, deviceId, jarObject):
+        self.typeId = typeId
+        self.deviceId = deviceId
         options = wiotp.sdk.device.parseConfigFile("device.yaml")
         self.client = wiotp.sdk.device.DeviceClient(config=options)
         self.client.commandCallback = self.commandCallback
@@ -60,10 +57,10 @@ class SmartJar:
 
     def __init__(self):
         f = open('properties.json')
-        properties = json.load(f)
+        self.properties = json.load(f)
         f.close()
-        self.calWeight = properties['CAL_WEIGHT']
-        self.calRefVal = properties['CAL_REF_VAL']
+        self.calWeight = self.properties['CAL_WEIGHT']
+        self.calRefVal = self.properties['CAL_REF_VAL']
         self.weightBuffer = deque()
         self.weightBufferSize = 5
         self.steadyStateCheckBuffer = deque()
@@ -82,11 +79,17 @@ class SmartJar:
         self.weightReadyFlag = 0
         self.alarmActiveTimeSec = 0
         self.alarmStartTime = 0
-        self.cloudClient = DeviceClient(self)
+        self.cloudClient = DeviceClient(self.properties['DEVICE_TYPE'], self.properties['DEVICE_ID'], self)
+
         self.hx = HX711(HX711_DATA_PIN, HX711_CLK_PIN)
-        self.hx.set_reading_format("MSB", "MSB")
-        self.hx.set_reference_unit(self.calRefVal)
+
+        if self.calRefVal == 0 or self.calWeight == 0:
+            self.calScale()
+        else:
+            self.hx.set_reading_format("MSB", "MSB")
+            self.hx.set_reference_unit(self.calRefVal)
         self.hx.reset()
+
         GPIO.setup(LOJ_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Lid On Jar Contact Sensor
         GPIO.setup(JOS_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Jar On Scale Contact Sensor
         GPIO.setup(LR_PIN, GPIO.OUT)                             # Lock Relay
@@ -94,6 +97,78 @@ class SmartJar:
 
     def connect(self):
         self.cloudClient.connect()
+
+    def calScale(self):
+        #Expand steady state check range as refernce value not yet set
+        self.steadyStateCheckThreshold = self.steadyStateCheckThreshold * 20
+
+        print ("No jar scale calibration data found, starting calibration process...")
+        a = input("Remove all weight from the scale and hit enter when ready.")
+        zeroReadings = []
+        print("Reading 10 values (this may take a while)...")
+        self.resetBuffers()
+        for i in range(10):
+            self.updateWeight()
+            while self.isSteadyState() == False:
+                self.updateWeight()    
+            val = self.readWeight()
+            zeroReadings.append(val)
+            print(val)
+            time.sleep(.1)
+        print()
+
+        a = input("Load weight and enter the weight used in grams:   ")
+        calReadings = []
+        print("Reading 10 values (this may take a while)...")
+        self.resetBuffers()
+        for i in range(10):
+            self.updateWeight()
+            while self.isSteadyState() == False:
+                self.updateWeight()    
+            val = self.readWeight()
+            calReadings.append(val)
+            print(val)
+            time.sleep(.1)
+        print()
+
+        zero = sum(zeroReadings) / len(zeroReadings)
+        cal = sum(calReadings) / len(calReadings)
+
+        self.calRefVal = (cal - zero) / float(a)
+        self.hx.set_reference_unit(self.calRefVal)
+        # Return steady state check range to previous value now that reference
+        # unit is known
+        self.steadyStateCheckThreshold = self.steadyStateCheckThreshold / 20
+
+        a = input("Remove all weight from the scale and hit enter when ready.")
+        offsetReadings = []
+        print("Reading 10 values (this may take a while)...")
+        self.resetBuffers()
+        for i in range(10):
+            self.updateWeight()
+            while self.isSteadyState() == False:
+                self.updateWeight()    
+            val = self.readWeight()
+            offsetReadings.append(val)
+            print(val)
+            time.sleep(.1)
+
+        self.calWeight = -1 * (sum(offsetReadings) / len(offsetReadings))
+        print("Calibration Complte:")
+        print("Reference Unit: " + str(self.calRefVal))
+        print("Scale Weight Offset (g): " + str(self.calWeight))
+        print()
+
+        # Update properties file for next time.
+        self.properties['CAL_WEIGHT'] = self.calWeight
+        self.properties['CAL_REF_VAL'] = self.calRefVal
+        f = open('properties.json','w')
+        json.dump(self.properties, f)
+        f.close()
+
+    def resetBuffers(self):
+        self.steadyStateCheckBuffer.clear()
+        self.weightBuffer.clear()
 
     def updateSteadyStateBuffer(self,data):
         self.steadyStateCheckBuffer.append(data)

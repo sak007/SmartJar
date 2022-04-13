@@ -1,6 +1,1 @@
-{
-  "DEVICE_TYPE": "RaspberryPi",
-  "DEVICE_ID": "SmartJar1",
-  "CAL_WEIGHT": 1031.76667,
-  "CAL_REF_VAL": 428.15
-}
+{"DEVICE_TYPE": "RaspberryPi", "DEVICE_ID": "SmartJar1", "CAL_WEIGHT": 0, "CAL_REF_VAL": 0}
