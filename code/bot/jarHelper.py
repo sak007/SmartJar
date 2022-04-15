@@ -59,6 +59,5 @@ def updateZeroWeight():
     update('zeroWeight', get('weight'))
 
 def updateCount():
-    count = round(get('weight')/get('zeroWeight'))
+    count = round((get('weight') - get('zeroWeight'))/get('weightPerItem'))
     update('count', count)
-    

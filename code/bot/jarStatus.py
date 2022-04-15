@@ -9,5 +9,6 @@ def run(message, bot):
     msg += 'lidState: '+ jarHelper.get('lidState')+ '\n'
     msg += 'jarOnScaleState: '+ jarHelper.get('jarOnScaleState')+ '\n'
     msg += 'lockState: ' + jarHelper.get('lockState')+ '\n'
-    msg += 'weight: ' + str(round(jarHelper.get('weight')))+ '\n'
+    msg += 'weight: ' + str(round(jarHelper.get('weight')))+ 'g\n'
+    msg += 'count: ' + str(jarHelper.get('count'))
     bot.send_message(chat_id, msg)
