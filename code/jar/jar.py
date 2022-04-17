@@ -23,11 +23,11 @@ HX711_CLK_PIN = 31            # HX711 Clock Pin
 class DeviceClient:
 
     def __init__(self, jarObject):
-        f = open('properties.json')
+        f = open('../../properties.json')
         properties = json.load(f)
         f.close()
-        self.typeId = properties['DEVICE_TYPE']
-        self.deviceId = properties['DEVICE_ID']
+        self.typeId = properties['DEVICE']['DEVICE_TYPE']
+        self.deviceId = properties['DEVICE']['DEVICE_ID']
         options = wiotp.sdk.device.parseConfigFile("device.yaml")
         self.client = wiotp.sdk.device.DeviceClient(config=options)
         self.client.commandCallback = self.commandCallback
@@ -98,7 +98,7 @@ class SmartJar:
 
     def isSteadyStateBufferReady(self):
         buffReadyFlag = False
-        if len(self.steadyStateCheckBuffer) >= self.steadySteateCheckCount:       
+        if len(self.steadyStateCheckBuffer) >= self.steadySteateCheckCount:
             buffReadyFlag = True
         return buffReadyFlag
 
@@ -133,7 +133,7 @@ class SmartJar:
             self.takeWeightMeasurementFlag = 0
 
     # Function to monitor and publish the state of the lid on the jar and set
-    # the flag that a new weight measurement needs to be taken. The contact 
+    # the flag that a new weight measurement needs to be taken. The contact
     # sensor is debounced before a new lid state is determined.
     def updateLidOnJarState(self):
         lidOnJarStateNew = GPIO.input(LOJ_PIN)
@@ -145,8 +145,8 @@ class SmartJar:
             if self.lidOnJarState == 0:
                 self.takeWeightMeasurementFlag = 1
 
-    # Function to monitor and publish the state of the jar on the scale. The 
-    # contact sensor is debounced before a new jar on scale state is 
+    # Function to monitor and publish the state of the jar on the scale. The
+    # contact sensor is debounced before a new jar on scale state is
     # determined.
     def updateJarOnScaleState(self):
         jarOnScaleStateNew = GPIO.input(JOS_PIN)
@@ -165,7 +165,7 @@ class SmartJar:
             self.alarmStartTime = 0
             GPIO.output(ALRM_PIN, GPIO.LOW)
 
-    # Function to control and publish the state of the lock. 
+    # Function to control and publish the state of the lock.
     def updateLock(self):
         # Unlock when requested
         if self.unlockRequestFlag == 1:
@@ -232,7 +232,7 @@ class SmartJar:
         elif self.lockState == 0:
             return "off"
         else:
-            return "unknown"    
+            return "unknown"
 
     # Helper function to get formatted jar on scale state.
     def getFormattedJarOnScaleState(self):
@@ -241,7 +241,7 @@ class SmartJar:
         elif self.jarOnScaleState == 0:
             return "off"
         else:
-            return "unknown"    
+            return "unknown"
 
 if __name__ == "__main__":
     try:

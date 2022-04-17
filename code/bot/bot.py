@@ -11,15 +11,13 @@ import refill
 from datetime import datetime
 from jproperties import Properties
 import jarStatus
+import json
 
-# configs = Properties()
-#
-# with open('user.properties', 'rb') as read_prop:
-#     configs.load(read_prop)
-#
-# api_token = str(configs.get('api_token').data)
 
-api_token = '5116895208:AAHBnLUSyqZtfkat7Gck0OvCMhz7djBqSqQ'
+f = open('../../properties.json')
+properties = json.load(f)
+
+api_token = properties['API_TOKEN']
 bot = telebot.TeleBot(api_token)
 
 telebot.logger.setLevel(logging.INFO)
@@ -50,7 +48,6 @@ def start_and_menu_command(m):
     return True
 
 
-# defines how the /new command has to be handled/processed
 @bot.message_handler(commands=['request'])
 def command_add(message):
     request.run(message, bot)

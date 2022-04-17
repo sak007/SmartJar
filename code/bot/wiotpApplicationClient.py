@@ -7,10 +7,10 @@ import jarHelper
 class ApplicationClient:
 
     def __init__(self):
-        f = open('properties.json')
+        f = open('../../properties.json')
         properties = json.load(f)
-        self.typeId = properties['DEVICE_TYPE']
-        self.deviceId = properties['DEVICE_ID']
+        self.typeId = properties['DEVICE']['DEVICE_TYPE']
+        self.deviceId = properties['DEVICE']['DEVICE_ID']
         options = wiotp.sdk.application.parseConfigFile("application.yaml")
         self.client = wiotp.sdk.application.ApplicationClient(config=options)
         self.client.connect()
