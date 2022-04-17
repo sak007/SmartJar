@@ -1,6 +1,8 @@
 from telebot import types
 import os
 import json
+import jarHelper
+from wiotpApplicationClient import ApplicationClient
 
 initial_users_map = {
     'PARENT': {},
@@ -19,14 +21,25 @@ commands = {
     'PARENT': {
         'menu': 'Display this menu',
         'start': 'Display this menu',
+        'refill': 'Initiate Refill',
         'listChildren': 'Display all the children registered',
         'listParents': 'Display all the parents registered',
         'deleteAccount': 'Delete the user account',
         'deleteChildAccount': 'TODO: Delete a specific child account',
-        'deleteParentAccount': 'TODO: Delete a specific parent account'
+        'deleteParentAccount': 'TODO: Delete a specific parent account',
+        'jarStatus':'Gives the status of the jar'
     }
 }
 
+def init():
+    load_users()
+    jarHelper.load_jar_status()
+    connectApp()
+
+def connectApp():
+    global client
+    client = ApplicationClient()
+    client.client.subscribeToDeviceEvents(eventId="jar")
 
 def load_users():
     global users
@@ -37,9 +50,9 @@ def load_users():
     elif os.stat('users.json').st_size != 0:
         with open('users.json') as json_file:
             users_data = json.load(json_file)
-        users = format_data(users_data)
+        users = format_users_data(users_data)
 
-def format_data(users_data):
+def format_users_data(users_data):
     data = initial_users_map
     for role in users_data.keys():
         for chat_id in users_data[role].keys():
@@ -108,3 +121,12 @@ def list(bot, chat_id, role):
         msg += str(i) + ". " + user_name + '\n'
         i += 1
     bot.send_message(chat_id, msg)
+
+def openJar(unlock, weight):
+    try:
+        # client = ApplicationClient()
+        eventData = {'unlock': unlock, 'weight': weight}
+        client.sendCommand('jar', eventData)
+        # client.client.disconnect()
+    except Exception as e:
+        print("Exception: ", e)

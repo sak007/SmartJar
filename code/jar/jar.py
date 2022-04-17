@@ -24,7 +24,7 @@ class DeviceClient:
     def __init__(self, typeId, deviceId, jarObject):
         self.typeId = typeId
         self.deviceId = deviceId
-        options = wiotp.sdk.device.parseConfigFile("device.yaml")
+        options = wiotp.sdk.device.parseConfigFile("../../device.yaml")
         self.client = wiotp.sdk.device.DeviceClient(config=options)
         self.client.commandCallback = self.commandCallback
         self.unlockRequestReceivedFlag = 0
@@ -55,7 +55,7 @@ class DeviceClient:
 class SmartJar:
 
     def __init__(self):
-        f = open('properties.json')
+        f = open('../../properties.json')
         self.properties = json.load(f)
         f.close()
         self.calWeight = self.properties['CAL_WEIGHT']
@@ -78,7 +78,7 @@ class SmartJar:
         self.weightReadyFlag = 0
         self.alarmActiveTimeSec = 0
         self.alarmStartTime = 0
-        self.cloudClient = DeviceClient(self.properties['DEVICE_TYPE'], self.properties['DEVICE_ID'], self)
+        self.cloudClient = DeviceClient(self.properties['DEVICE']['DEVICE_TYPE'], self.properties['DEVICE']['DEVICE_ID'], self)
 
         self.hx = HX711(HX711_DATA_PIN, HX711_CLK_PIN)
 
@@ -109,7 +109,7 @@ class SmartJar:
         for i in range(10):
             self.updateWeight()
             while self.isSteadyState() == False:
-                self.updateWeight()    
+                self.updateWeight()
             val = self.readWeight()
             zeroReadings.append(val)
             print(val)
@@ -123,7 +123,7 @@ class SmartJar:
         for i in range(10):
             self.updateWeight()
             while self.isSteadyState() == False:
-                self.updateWeight()    
+                self.updateWeight()
             val = self.readWeight()
             calReadings.append(val)
             print(val)
@@ -146,7 +146,7 @@ class SmartJar:
         for i in range(10):
             self.updateWeight()
             while self.isSteadyState() == False:
-                self.updateWeight()    
+                self.updateWeight()
             val = self.readWeight()
             offsetReadings.append(val)
             print(val)
@@ -161,7 +161,7 @@ class SmartJar:
         # Update properties file for next time.
         self.properties['CAL_WEIGHT'] = self.calWeight
         self.properties['CAL_REF_VAL'] = self.calRefVal
-        f = open('properties.json','w')
+        f = open('../../properties.json','w')
         json.dump(self.properties, f)
         f.close()
 
@@ -177,7 +177,7 @@ class SmartJar:
 
     def isSteadyStateBufferReady(self):
         buffReadyFlag = False
-        if len(self.steadyStateCheckBuffer) >= self.steadySteateCheckCount:       
+        if len(self.steadyStateCheckBuffer) >= self.steadySteateCheckCount:
             buffReadyFlag = True
         return buffReadyFlag
 
@@ -212,7 +212,7 @@ class SmartJar:
             self.takeWeightMeasurementFlag = 0
 
     # Function to monitor and publish the state of the lid on the jar and set
-    # the flag that a new weight measurement needs to be taken. The contact 
+    # the flag that a new weight measurement needs to be taken. The contact
     # sensor is debounced before a new lid state is determined.
     def updateLidOnJarState(self):
         lidOnJarStateNew = GPIO.input(LOJ_PIN)
@@ -224,8 +224,8 @@ class SmartJar:
             if self.lidOnJarState == 0:
                 self.takeWeightMeasurementFlag = 1
 
-    # Function to monitor and publish the state of the jar on the scale. The 
-    # contact sensor is debounced before a new jar on scale state is 
+    # Function to monitor and publish the state of the jar on the scale. The
+    # contact sensor is debounced before a new jar on scale state is
     # determined.
     def updateJarOnScaleState(self):
         jarOnScaleStateNew = GPIO.input(JOS_PIN)
@@ -239,7 +239,7 @@ class SmartJar:
         # The alarm was requested to be active
         if self.alarmActiveTimeSec != 0 and self.alarmStartTime == 0:
             self.alarmStartTime = time.time()
- 
+
         # Lid was taken off jar but it wasn't unlocked or the alarm timer is set
         if (self.lidOnJarState == 0 and self.lockState == 1) or self.alarmStartTime != 0:
             GPIO.output(ALRM_PIN, GPIO.HIGH)
@@ -249,7 +249,7 @@ class SmartJar:
             self.alarmStartTime = 0
             GPIO.output(ALRM_PIN, GPIO.LOW)
 
-    # Function to control and publish the state of the lock. 
+    # Function to control and publish the state of the lock.
     def updateLock(self):
         # Unlock when requested
         if self.unlockRequestFlag == 1:
@@ -316,7 +316,7 @@ class SmartJar:
         elif self.lockState == 0:
             return "unlocked"
         else:
-            return "unknown"    
+            return "unknown"
 
     # Helper function to get formatted jar on scale state.
     def getFormattedJarOnScaleState(self):
@@ -325,7 +325,7 @@ class SmartJar:
         elif self.jarOnScaleState == 0:
             return "off"
         else:
-            return "unknown"    
+            return "unknown"
 
 if __name__ == "__main__":
     try:
