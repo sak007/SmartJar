@@ -3,6 +3,7 @@ import logging
 from telebot import types
 from datetime import datetime
 from wiotpApplicationClient import ApplicationClient
+import jarHelper
 
 
 
@@ -46,7 +47,25 @@ def approve(bot, count, request_message, responder_message):
     msg = 'Request Approved by ' + parent_name + ' for ' + str(count) + ' cookies\n';
     msg += "Don't take more than " + str(count) + " cookies"
     bot.reply_to(request_message, msg)
-    helper.openJar(True, count)
+    helper.openJar(True, count * jarHelper.get('weightPerItem'))
+    requesterChatId = request_message.chat.id
+    responderChatId = responder_message.chat.id
+    validateItemsTaken(bot, count, requesterChatId, responderChatId)
+
+def validateItemsTaken(bot, count, requesterChatId, responderChatId):
+    jarHelper.resetIsNewWeight()
+    itemsTaken = jarHelper.getItemsTaken()
+    name = helper.get_name(requesterChatId)
+    if itemsTaken > count:
+        helper.triggerAlarm()
+        requesterMsg = "You took more that the approved quantity. Alert sent to approver."
+        responderMsg = "ALERT: " + name + " took " + str(itemsTaken) + " items instead of " + str(count) + "."
+        bot.send_message(requesterChatId, requesterMsg)
+        bot.send_message(responderChatId, responderMsg)
+    else:
+        responderMsg = name + " took " + str(itemsTaken) + " items."
+        bot.send_message(responderChatId, responderMsg)
+    helper.addLogs(requesterChatId, responderChatId, count, itemsTaken)
 
 def reject(bot, request_message, responder_message):
     parent_name = helper.get_name(responder_message.chat.id)

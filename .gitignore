@@ -130,3 +130,5 @@ dmypy.json
 
 jar_info.json
 users.json
+*.csv
+.DS_Store

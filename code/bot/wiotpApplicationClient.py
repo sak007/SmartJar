@@ -25,7 +25,10 @@ class ApplicationClient:
         print(event.eventId, event.data)
         for key in jarHelper.get_info().keys():
             if key in event.data:
+                print("received new " + key)
                 jarHelper.update(key, event.data[key])
+                if (key == 'weight'):
+                    jarHelper.newWeight = True
 
 if __name__ == "__main__":
     try:

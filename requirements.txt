@@ -1,3 +1,5 @@
 wiotp-sdk
 pyTelegramBotAPI
 jproperties
+PrettyTable
+imgkit
