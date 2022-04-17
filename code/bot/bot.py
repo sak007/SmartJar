@@ -7,17 +7,17 @@ import helper
 import deleteAccount
 import listChildren
 import listParents
+import refill
 from datetime import datetime
 from jproperties import Properties
+import jarStatus
+import json
 
-# configs = Properties()
-#
-# with open('user.properties', 'rb') as read_prop:
-#     configs.load(read_prop)
-#
-# api_token = str(configs.get('api_token').data)
 
-api_token = '5116895208:AAHBnLUSyqZtfkat7Gck0OvCMhz7djBqSqQ'
+f = open('../../properties.json')
+properties = json.load(f)
+
+api_token = properties['API_TOKEN']
 bot = telebot.TeleBot(api_token)
 
 telebot.logger.setLevel(logging.INFO)
@@ -48,7 +48,6 @@ def start_and_menu_command(m):
     return True
 
 
-# defines how the /new command has to be handled/processed
 @bot.message_handler(commands=['request'])
 def command_add(message):
     request.run(message, bot)
@@ -65,9 +64,18 @@ def command_add(message):
 def command_add(message):
     listParents.run(message, bot)
 
+@bot.message_handler(commands=['jarStatus'])
+def command_add(message):
+    jarStatus.run(message, bot)
+
+@bot.message_handler(commands=['refill'])
+def command_add(message):
+    refill.run(message, bot)
+
+
 def main():
     try:
-        helper.load_users()
+        helper.init()
         bot.polling(none_stop=True)
     except Exception as e:
         logging.exception(str(e))
