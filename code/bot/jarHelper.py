@@ -64,15 +64,25 @@ def updateCount():
     update('count', count)
 
 def isNewWeight():
+    global newWeight
     return newWeight
 
 def resetIsNewWeight():
+    global newWeight
     newWeight = False
 
 def waitForNewWeight():
-    while get('lockState') != 'locked':
+    global newWeight
+    resetIsNewWeight()
+    print(newWeight)
+    while get('lidState') != 'on':
+        # print(newWeight)
         continue
-    while not isNewWeight():
+    while not newWeight:
+        continue
+
+def waitForLidOpen():
+    while get('lidState') != 'off':
         continue
 
 def getItemsTaken():
@@ -82,4 +92,3 @@ def getItemsTaken():
     count = round((oldWeight - newWeight)/get('weightPerItem'))
     updateCount()
     return count
-    # print("New Weight")

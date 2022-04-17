@@ -18,8 +18,8 @@ class ApplicationClient:
 
     def sendCommand(self, commandId, data):
         self.client.publishCommand(self.typeId, self.deviceId, commandId, "json", data)
-        print(data)
-        print('Command Sent')
+        # print(data)
+        # print('Command Sent')
 
     def onMessage(self, event):
         print(event.eventId, event.data)
