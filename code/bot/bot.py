@@ -8,6 +8,8 @@ import deleteAccount
 import listChildren
 import listParents
 import refill
+import unlock
+import history
 from datetime import datetime
 from jproperties import Properties
 import jarStatus
@@ -76,6 +78,9 @@ def command_add(message):
 def command_add(message):
     unlock.run(message, bot)
 
+@bot.message_handler(commands=['history'])
+def command_add(message):
+    history.run(message, bot)
 
 def main():
     try:

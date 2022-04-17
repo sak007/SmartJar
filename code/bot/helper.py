@@ -5,6 +5,9 @@ import jarHelper
 from wiotpApplicationClient import ApplicationClient
 from csv import writer
 import datetime
+from prettytable import from_csv
+import imgkit
+import os
 
 CHILD_LOG_FILE = "childRequests.csv"
 ADULT_LOG_FILE = "adultRequests.csv"
@@ -28,6 +31,7 @@ commands = {
         'start': 'Display this menu',
         'refill': 'Initiate Refill',
         'unlock': 'Unlock Jar',
+        'history': 'Get historic records',
         'listChildren': 'Display all the children registered',
         'listParents': 'Display all the parents registered',
         'deleteAccount': 'Delete the user account',
@@ -148,12 +152,12 @@ def addLogs(requester, approvedBy, approvedQty, actualQty):
     if not os.path.exists(CHILD_LOG_FILE):
         with open(CHILD_LOG_FILE, 'w', newline='') as f:
             w = writer(f)
-            w.writerow(['TIMESTAMP', 'REQUESTER', 'APPROVED BY', 'APPROVED QTY', 'ACTUAL QTY'])
+            w.writerow(['TIMESTAMP', 'REQUESTER CHAT ID', 'REQUESTER', 'APPROVED BY CHAT ID', 'APPROVED BY', 'APPROVED QTY', 'ACTUAL QTY'])
             f.close()
     timestamp = datetime.datetime.now()
     with open(CHILD_LOG_FILE, 'a', newline='') as f:
         w = writer(f)
-        w.writerow([timestamp, requester, approvedBy, approvedQty, actualQty])
+        w.writerow([timestamp, requester, get_name(requester), approvedBy, get_name(approvedBy), approvedQty, actualQty])
         f.close()
 
 def addAdultLogs(requester, qty):
@@ -167,3 +171,16 @@ def addAdultLogs(requester, qty):
         w = writer(f)
         w.writerow([timestamp, requester, qty])
         f.close()
+
+def sendTable(bot, chat_id, file, fields):
+    with open(file) as fp:
+        table = from_csv(fp)
+
+    code = table.get_html_string(fields=fields)
+    html_file = open('Table.html', 'w')
+    html_file = html_file.write(code)
+    imgkit.from_file('Table.html', 'out.jpg')
+
+    bot.send_photo(chat_id,photo=open('out.jpg', 'rb'))
+    os.remove('out.jpg')
+    os.remove('Table.html')
