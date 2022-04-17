@@ -130,3 +130,10 @@ def openJar(unlock, weight):
         # client.client.disconnect()
     except Exception as e:
         print("Exception: ", e)
+
+def triggerAlarm():
+    try:
+        eventData = {'triggerAlarm': 5}
+        client.sendCommand('jar', eventData)
+    except Exception as e:
+        print("Exception: ", e)

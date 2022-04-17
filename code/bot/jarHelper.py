@@ -21,6 +21,7 @@ initial_jar_info_map = {
     'count': -1
 }
 
+newWeight = False
 
 def load_jar_status():
     global jar_info
@@ -61,3 +62,24 @@ def updateZeroWeight():
 def updateCount():
     count = round((get('weight') - get('zeroWeight'))/get('weightPerItem'))
     update('count', count)
+
+def isNewWeight():
+    return newWeight
+
+def resetIsNewWeight():
+    newWeight = False
+
+def waitForNewWeight():
+    while get('lockState') != 'locked':
+        continue
+    while not isNewWeight():
+        continue
+
+def getItemsTaken():
+    oldWeight = get('weight')
+    waitForNewWeight()
+    newWeight = get('weight')
+    count = round((oldWeight - newWeight)/get('weightPerItem'))
+    updateCount()
+    return count
+    # print("New Weight")
