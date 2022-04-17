@@ -65,6 +65,7 @@ def validateItemsTaken(bot, count, requesterChatId, responderChatId):
     else:
         responderMsg = name + " took " + str(itemsTaken) + " items."
         bot.send_message(responderChatId, responderMsg)
+    helper.addLogs(requesterChatId, responderChatId, count, itemsTaken)
 
 def reject(bot, request_message, responder_message):
     parent_name = helper.get_name(responder_message.chat.id)

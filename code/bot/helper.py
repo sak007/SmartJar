@@ -3,6 +3,10 @@ import os
 import json
 import jarHelper
 from wiotpApplicationClient import ApplicationClient
+from csv import writer
+import datetime
+
+LOG_FILE = "data.csv"
 
 initial_users_map = {
     'PARENT': {},
@@ -137,3 +141,15 @@ def triggerAlarm():
         client.sendCommand('jar', eventData)
     except Exception as e:
         print("Exception: ", e)
+
+def addLogs(requester, approvedBy, approvedQty, actualQty):
+    if not os.path.exists(LOG_FILE):
+        with open(LOG_FILE, 'w', newline='') as f:
+            w = writer(f)
+            w.writerow(['TIMESTAMP', 'REQUESTER', 'APPROVED BY', 'APPROVED QTY', 'ACTUAL QTY'])
+            f.close()
+    timestamp = datetime.datetime.now()
+    with open(LOG_FILE, 'a', newline='') as f:
+        w = writer(f)
+        w.writerow([timestamp, requester, approvedBy, approvedQty, actualQty])
+        f.close()
