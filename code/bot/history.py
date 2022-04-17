@@ -24,4 +24,7 @@ def post_type_select(message, bot):
     elif message.text == 'CHILD':
         file = helper.CHILD_LOG_FILE
         fields = ["TIMESTAMP", "REQUESTER", "APPROVED BY", "APPROVED QTY", "ACTUAL QTY"]
-    helper.sendTable(bot, chat_id, file, fields)
+    if not os.path.exists(file):
+        bot.reply_to(message, "History does not exist")
+    else:
+        helper.sendTable(bot, chat_id, file, fields)
