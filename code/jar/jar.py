@@ -162,7 +162,7 @@ class SmartJar:
         self.properties['CAL_WEIGHT'] = self.calWeight
         self.properties['CAL_REF_VAL'] = self.calRefVal
         f = open('../../properties.json','w')
-        json.dump(self.properties, f)
+        json.dump(self.properties, f, ensure_ascii=False, indent=4)
         f.close()
 
     def resetBuffers(self):
