@@ -72,6 +72,10 @@ def command_add(message):
 def command_add(message):
     refill.run(message, bot)
 
+@bot.message_handler(commands=['unlock'])
+def command_add(message):
+    unlock.run(message, bot)
+
 
 def main():
     try:

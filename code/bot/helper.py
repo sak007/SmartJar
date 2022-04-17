@@ -6,7 +6,8 @@ from wiotpApplicationClient import ApplicationClient
 from csv import writer
 import datetime
 
-LOG_FILE = "data.csv"
+CHILD_LOG_FILE = "childRequests.csv"
+ADULT_LOG_FILE = "adultRequests.csv"
 
 initial_users_map = {
     'PARENT': {},
@@ -26,11 +27,12 @@ commands = {
         'menu': 'Display this menu',
         'start': 'Display this menu',
         'refill': 'Initiate Refill',
+        'unlock': 'Unlock Jar',
         'listChildren': 'Display all the children registered',
         'listParents': 'Display all the parents registered',
         'deleteAccount': 'Delete the user account',
-        'deleteChildAccount': 'TODO: Delete a specific child account',
-        'deleteParentAccount': 'TODO: Delete a specific parent account',
+        # 'deleteChildAccount': 'TODO: Delete a specific child account',
+        # 'deleteParentAccount': 'TODO: Delete a specific parent account',
         'jarStatus':'Gives the status of the jar'
     }
 }
@@ -143,13 +145,25 @@ def triggerAlarm():
         print("Exception: ", e)
 
 def addLogs(requester, approvedBy, approvedQty, actualQty):
-    if not os.path.exists(LOG_FILE):
-        with open(LOG_FILE, 'w', newline='') as f:
+    if not os.path.exists(CHILD_LOG_FILE):
+        with open(CHILD_LOG_FILE, 'w', newline='') as f:
             w = writer(f)
             w.writerow(['TIMESTAMP', 'REQUESTER', 'APPROVED BY', 'APPROVED QTY', 'ACTUAL QTY'])
             f.close()
     timestamp = datetime.datetime.now()
-    with open(LOG_FILE, 'a', newline='') as f:
+    with open(CHILD_LOG_FILE, 'a', newline='') as f:
         w = writer(f)
         w.writerow([timestamp, requester, approvedBy, approvedQty, actualQty])
+        f.close()
+
+def addAdultLogs(requester, qty):
+    if not os.path.exists(ADULT_LOG_FILE):
+        with open(ADULT_LOG_FILE, 'w', newline='') as f:
+            w = writer(f)
+            w.writerow(['TIMESTAMP', 'REQUESTER', 'QTY'])
+            f.close()
+    timestamp = datetime.datetime.now()
+    with open(ADULT_LOG_FILE, 'a', newline='') as f:
+        w = writer(f)
+        w.writerow([timestamp, requester, qty])
         f.close()
