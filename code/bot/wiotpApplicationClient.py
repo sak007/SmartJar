@@ -11,7 +11,7 @@ class ApplicationClient:
         properties = json.load(f)
         self.typeId = properties['DEVICE']['DEVICE_TYPE']
         self.deviceId = properties['DEVICE']['DEVICE_ID']
-        options = wiotp.sdk.application.parseConfigFile("application.yaml")
+        options = wiotp.sdk.application.parseConfigFile("../../application.yaml")
         self.client = wiotp.sdk.application.ApplicationClient(config=options)
         self.client.connect()
         self.client.deviceEventCallback = self.onMessage

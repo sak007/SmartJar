@@ -28,7 +28,7 @@ class DeviceClient:
         f.close()
         self.typeId = properties['DEVICE']['DEVICE_TYPE']
         self.deviceId = properties['DEVICE']['DEVICE_ID']
-        options = wiotp.sdk.device.parseConfigFile("device.yaml")
+        options = wiotp.sdk.device.parseConfigFile("../../device.yaml")
         self.client = wiotp.sdk.device.DeviceClient(config=options)
         self.client.commandCallback = self.commandCallback
         self.unlockRequestReceivedFlag = 0
