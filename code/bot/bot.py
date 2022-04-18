@@ -14,6 +14,7 @@ from datetime import datetime
 from jproperties import Properties
 import jarStatus
 import json
+import jarHelper
 
 
 f = open('../../properties.json')
@@ -81,6 +82,9 @@ def command_add(message):
 @bot.message_handler(commands=['history'])
 def command_add(message):
     history.run(message, bot)
+
+def checkForLowCount():
+    jarHelper.checkForLowCount(bot)
 
 def main():
     try:

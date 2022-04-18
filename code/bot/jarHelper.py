@@ -1,6 +1,6 @@
 import os
 import json
-
+import helper
 # connectionStatus: ‘online’/’offline’
 # lidState: ‘on’/’off/unknown’
 # jarOnScaleState: ‘on’/’off/unknown’
@@ -22,6 +22,7 @@ initial_jar_info_map = {
 }
 
 newWeight = False
+refillState = False
 
 def load_jar_status():
     global jar_info
@@ -64,15 +65,25 @@ def updateCount():
     update('count', count)
 
 def isNewWeight():
+    global newWeight
     return newWeight
 
 def resetIsNewWeight():
+    global newWeight
     newWeight = False
 
 def waitForNewWeight():
-    while get('lockState') != 'locked':
+    global newWeight
+    resetIsNewWeight()
+    print(newWeight)
+    while get('lidState') != 'on':
+        # print(newWeight)
         continue
-    while not isNewWeight():
+    while not newWeight:
+        continue
+
+def waitForLidOpen():
+    while get('lidState') != 'off':
         continue
 
 def getItemsTaken():
@@ -82,4 +93,18 @@ def getItemsTaken():
     count = round((oldWeight - newWeight)/get('weightPerItem'))
     updateCount()
     return count
-    # print("New Weight")
+
+def setRefillState(state):
+    global refillState
+    refillState = state
+
+def checkForLowCount(bot):
+    # print("checkForLowCount")
+    # print(refillState)
+    updateCount()
+    count = get('count')
+    # print(count)
+    if (not refillState) and (count < 3):
+        msg = "ALERT: Item count is low\n" + "count = " + str(count)
+        for partent_chat_id in helper.get_parents_chat_ids():
+            bot.send_message(partent_chat_id, msg)

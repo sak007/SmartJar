@@ -3,6 +3,7 @@ import json
 import uuid
 from time import sleep
 import jarHelper
+import bot
 
 class ApplicationClient:
 
@@ -18,8 +19,8 @@ class ApplicationClient:
 
     def sendCommand(self, commandId, data):
         self.client.publishCommand(self.typeId, self.deviceId, commandId, "json", data)
-        print(data)
-        print('Command Sent')
+        # print(data)
+        # print('Command Sent')
 
     def onMessage(self, event):
         print(event.eventId, event.data)
@@ -29,6 +30,7 @@ class ApplicationClient:
                 jarHelper.update(key, event.data[key])
                 if (key == 'weight'):
                     jarHelper.newWeight = True
+                    bot.checkForLowCount()
 
 if __name__ == "__main__":
     try:
