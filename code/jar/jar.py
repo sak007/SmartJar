@@ -244,7 +244,8 @@ class SmartJar:
         if (self.lidOnJarState == 0 and self.lockState == 1) or self.alarmStartTime != 0:
             GPIO.output(ALRM_PIN, GPIO.HIGH)
 
-        elif (self.alarmActiveTimeSec != 0 and (time.time() - self.alarmStartTime) > self.alarmActiveTimeSec) or (self.alarmActiveTimeSec == 0 and self.lidOnJarState == 1):
+        # Check if the alarm can be disabled
+        if (self.alarmActiveTimeSec != 0 and (time.time() - self.alarmStartTime) > self.alarmActiveTimeSec) or (self.alarmActiveTimeSec == 0 and self.lidOnJarState == 1):
             self.alarmActiveTimeSec = 0
             self.alarmStartTime = 0
             GPIO.output(ALRM_PIN, GPIO.LOW)
