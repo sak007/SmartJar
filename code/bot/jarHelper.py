@@ -99,11 +99,11 @@ def setRefillState(state):
     refillState = state
 
 def checkForLowCount(bot):
-    print("checkForLowCount")
-    print(refillState)
+    # print("checkForLowCount")
+    # print(refillState)
     updateCount()
     count = get('count')
-    print(count)
+    # print(count)
     if (not refillState) and (count < 3):
         msg = "ALERT: Item count is low\n" + "count = " + str(count)
         for partent_chat_id in helper.get_parents_chat_ids():
