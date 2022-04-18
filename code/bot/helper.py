@@ -164,12 +164,12 @@ def addAdultLogs(requester, qty):
     if not os.path.exists(ADULT_LOG_FILE):
         with open(ADULT_LOG_FILE, 'w', newline='') as f:
             w = writer(f)
-            w.writerow(['TIMESTAMP', 'REQUESTER', 'QTY'])
+            w.writerow(['TIMESTAMP', 'REQUESTER CHAT ID', 'REQUESTER', 'QTY'])
             f.close()
     timestamp = datetime.datetime.now()
     with open(ADULT_LOG_FILE, 'a', newline='') as f:
         w = writer(f)
-        w.writerow([timestamp, requester, qty])
+        w.writerow([timestamp, requester, get_name(requester), qty])
         f.close()
 
 def sendTable(bot, chat_id, file, fields):

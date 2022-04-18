@@ -3,6 +3,7 @@ import json
 import uuid
 from time import sleep
 import jarHelper
+import bot
 
 class ApplicationClient:
 
@@ -29,6 +30,7 @@ class ApplicationClient:
                 jarHelper.update(key, event.data[key])
                 if (key == 'weight'):
                     jarHelper.newWeight = True
+                    bot.checkForLowCount()
 
 if __name__ == "__main__":
     try:
