@@ -15,7 +15,7 @@ from jproperties import Properties
 import jarStatus
 import json
 import jarHelper
-
+import reset
 
 f = open('../../properties.json')
 properties = json.load(f)
@@ -52,36 +52,64 @@ def start_and_menu_command(m):
 
 
 @bot.message_handler(commands=['request'])
-def command_add(message):
-    request.run(message, bot)
+def command_request(message):
+    if not helper.is_parent(message.chat.id):
+        request.run(message, bot)
+    else:
+        bot.reply_to(message, "Invalid command")
 
 @bot.message_handler(commands=['deleteAccount'])
-def command_add(message):
+def command_deleteAccount(message):
     deleteAccount.run(message, bot)
 
 @bot.message_handler(commands=['listChildren'])
-def command_add(message):
-    listChildren.run(message, bot)
+def command_listChildren(message):
+    if helper.is_parent(message.chat.id):
+        listChildren.run(message, bot)
+    else:
+        bot.reply_to(message, "Invalid command")
 
 @bot.message_handler(commands=['listParents'])
-def command_add(message):
-    listParents.run(message, bot)
+def command_listParents(message):
+    if helper.is_parent(message.chat.id):
+        listParents.run(message, bot)
+    else:
+        bot.reply_to(message, "Invalid command")
 
 @bot.message_handler(commands=['jarStatus'])
-def command_add(message):
-    jarStatus.run(message, bot)
+def command_jarStatus(message):
+    if helper.is_parent(message.chat.id):
+        jarStatus.run(message, bot)
+    else:
+        bot.reply_to(message, "Invalid command")
 
 @bot.message_handler(commands=['refill'])
-def command_add(message):
-    refill.run(message, bot)
+def command_refill(message):
+    if helper.is_parent(message.chat.id):
+        refill.run(message, bot)
+    else:
+        bot.reply_to(message, "Invalid command")
 
 @bot.message_handler(commands=['unlock'])
-def command_add(message):
-    unlock.run(message, bot)
+def command_unlock(message):
+    if helper.is_parent(message.chat.id):
+        unlock.run(message, bot)
+    else:
+        bot.reply_to(message, "Invalid command")
 
 @bot.message_handler(commands=['history'])
-def command_add(message):
-    history.run(message, bot)
+def command_history(message):
+    if helper.is_parent(message.chat.id):
+        history.run(message, bot)
+    else:
+        bot.reply_to(message, "Invalid command")
+
+@bot.message_handler(commands=['reset'])
+def command_history(message):
+    if helper.is_parent(message.chat.id):
+        reset.run(message, bot)
+    else:
+        bot.reply_to(message, "Invalid command")
 
 def checkForLowCount():
     jarHelper.checkForLowCount(bot)
