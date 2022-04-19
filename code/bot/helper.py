@@ -37,7 +37,8 @@ commands = {
         'deleteAccount': 'Delete the user account',
         # 'deleteChildAccount': 'TODO: Delete a specific child account',
         # 'deleteParentAccount': 'TODO: Delete a specific parent account',
-        'jarStatus':'Gives the status of the jar'
+        'jarStatus':'Gives the status of the jar',
+        'reset': 'Clear all logs'
     }
 }
 
@@ -184,3 +185,6 @@ def sendTable(bot, chat_id, file, fields):
     bot.send_photo(chat_id,photo=open('out.jpg', 'rb'))
     os.remove('out.jpg')
     os.remove('Table.html')
+
+def is_parent(chat_id):
+    return chat_id in users['PARENT'].keys()
