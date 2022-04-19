@@ -1,7 +1,14 @@
 # SmartJar
 
-## Setup Instructions
+# Setup Instructions
 
+## Hardware Setup
+
+### What You’ll Need For This Project 
+ - TODO
+### Setup
+ - TODO
+## Software Setup
 ### Bot
  - Generate api_token for bot.
    + Download and install the Telegram mobile application or desktop application for your system from the following site: https://desktop.telegram.org/
