@@ -27,8 +27,10 @@ BOM
 6) KeeYees Relay - https://www.amazon.com/gp/product/B07L6J6FHH/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1
 
 Alternates:
+
 7) 250N 24V Magnet - https://www.amazon.com/dp/B01N21QDQC?psc=1&ref=ppx_yo2ov_dt_b_product_details
-8) 24V DC Power Adaptor - https://www.amazon.com/dp/B08MQ2KM2N?ref=ppx_yo2ov_dt_b_product_details&th=1
+
+9) 24V DC Power Adaptor - https://www.amazon.com/dp/B08MQ2KM2N?ref=ppx_yo2ov_dt_b_product_details&th=1
 
 ### Schematic
 ![image](https://user-images.githubusercontent.com/46975667/164135086-226d8538-8a4b-4966-9674-841a2dd3733a.png)
