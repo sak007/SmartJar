@@ -17,7 +17,7 @@
 9. Aluminum Foil and Wire Contact sensors for the Lid on Jar and Jar on Scale
 10. Alarm/LED - Activated by Pi when the lid is forcibly opened or the child took more than the approved quantity.
 
-BOM
+### BOM
 
 1) Jar - [link](https://www.amazon.com/dp/B0969WVW8M?ref=ppx_yo2ov_dt_b_product_details&th=1)
 2) Alamscn 5 Kg Load Cell - [link](https://www.amazon.com/dp/B08KRWY43Y?ref=ppx_yo2ov_dt_b_product_details&th=1)
@@ -26,7 +26,7 @@ BOM
 5) 5V Power DC Power Adaptor - [link](https://www.amazon.com/dp/B078RXZM4C?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 6) KeeYees Relay - [link](https://www.amazon.com/gp/product/B07L6J6FHH/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
 
-Alternates:
+### Alternates:
 
 7) 250N 24V Magnet - [link](https://www.amazon.com/dp/B01N21QDQC?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 8) 24V DC Power Adaptor - [link](https://www.amazon.com/dp/B08MQ2KM2N?ref=ppx_yo2ov_dt_b_product_details&th=1)
