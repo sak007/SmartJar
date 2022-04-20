@@ -1,5 +1,13 @@
 # SmartJar
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![version](https://img.shields.io/badge/version-1.0-blue)](https://github.com/sak007/SmartJar/releases/tag/v1.0)
+[![DOI](https://zenodo.org/badge/469118048.svg)](https://zenodo.org/badge/latestdoi/469118048)
+[![GitHub issues](https://img.shields.io/github/issues/sak007/SmartJar)](https://github.com/sak007/SmartJar/issues?q=is%3Aopen+is%3Aissue)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/sak007/SmartJar)](https://github.com/sak007/SmartJar/issues?q=is%3Aissue+is%3Aclosed)
+[![Github pull requests](https://img.shields.io/github/issues-pr/sak007/SmartJar)](https://github.com/sak007/SmartJar/pulls)
+[![Github closed pull requests](https://img.shields.io/github/issues-pr-closed/sak007/SmartJar)](https://github.com/sak007/SmartJar/pulls?q=is%3Apr+is%3Aclosed)
+
 # Setup Instructions
 
 ## Hardware Setup
