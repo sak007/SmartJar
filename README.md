@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![version](https://img.shields.io/badge/version-1.0-blue)](https://github.com/sak007/SmartJar/releases/tag/v1.0)
-[![Platform](https://img.shields.io/badge/Platform-Telegram-blue)](https://desktop.telegram.org/)
+[![Telegram](https://img.shields.io/badge/-telegram-red?color=white&logo=telegram&logoColor=black)](https://desktop.telegram.org/)
 [![Platform](https://img.shields.io/badge/Platform-IBMCloud-blue)](https://www.ibm.com/cloud/)
 [![Protocol](https://img.shields.io/badge/Protocol-MQTT-blue)](https://mqtt.org)
 [![DOI](https://zenodo.org/badge/472509628.svg)](https://zenodo.org/badge/latestdoi/472509628)
