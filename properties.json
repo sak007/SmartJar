@@ -1,9 +1,9 @@
 {
   "DEVICE": {
-    "DEVICE_TYPE": "RaspberryPi",
-    "DEVICE_ID": "SmartJar1"
+    "DEVICE_TYPE": "",
+    "DEVICE_ID": ""
   },
-  "API_TOKEN": "5116895208:AAHBnLUSyqZtfkat7Gck0OvCMhz7djBqSqQ",
+  "API_TOKEN": "",
   "CAL_WEIGHT": 0,
   "CAL_REF_VAL": 0
 }
