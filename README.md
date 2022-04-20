@@ -36,6 +36,7 @@
 
 ## Software Setup
 ### Bot
+ - Create an account in IBM Watson IoT platform and register your device ([ibmcloudpi](https://github.com/usmanwardag/ibmcloudpi)).
  - Generate api_token for bot.
    + Download and install the Telegram mobile application or desktop application for your system from the following site: https://desktop.telegram.org/
    + Once you login to your Telegram account, search for "BotFather" in Telegram. Click on \"Start\" --> enter the following command: ```/newbot```
