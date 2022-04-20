@@ -19,12 +19,12 @@
 
 BOM
 
-1) Jar - https://www.amazon.com/dp/B0969WVW8M?ref=ppx_yo2ov_dt_b_product_details&th=1
-2) Alamscn 5 Kg Load Cell - https://www.amazon.com/dp/B08KRWY43Y?ref=ppx_yo2ov_dt_b_product_details&th=1
-3) SparkFun HX711 Load Cell Amplifier - https://www.amazon.com/dp/B079LVMC6X?psc=1&ref=ppx_yo2ov_dt_b_product_details
-4) 50N 5V Magnet - https://www.amazon.com/dp/B01CYB0G24?psc=1&ref=ppx_yo2ov_dt_b_product_details
-5) 5V Power DC Power Adaptor - https://www.amazon.com/dp/B078RXZM4C?psc=1&ref=ppx_yo2ov_dt_b_product_details
-6) KeeYees Relay - https://www.amazon.com/gp/product/B07L6J6FHH/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1
+1) Jar - [link](https://www.amazon.com/dp/B0969WVW8M?ref=ppx_yo2ov_dt_b_product_details&th=1)
+2) Alamscn 5 Kg Load Cell - [link](https://www.amazon.com/dp/B08KRWY43Y?ref=ppx_yo2ov_dt_b_product_details&th=1)
+3) SparkFun HX711 Load Cell Amplifier - [link](https://www.amazon.com/dp/B079LVMC6X?psc=1&ref=ppx_yo2ov_dt_b_product_details)
+4) 50N 5V Magnet - [link](https://www.amazon.com/dp/B01CYB0G24?psc=1&ref=ppx_yo2ov_dt_b_product_details)
+5) 5V Power DC Power Adaptor - [link](https://www.amazon.com/dp/B078RXZM4C?psc=1&ref=ppx_yo2ov_dt_b_product_details)
+6) KeeYees Relay - [link](https://www.amazon.com/gp/product/B07L6J6FHH/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
 
 Alternates:
 
